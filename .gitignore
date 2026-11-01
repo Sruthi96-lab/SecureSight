@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+instance/
+data/uploaded_activity.csv
+data/analyzed_activity.csv
+securesight_sample_test.csv
+invalid_test.csv
+test_activity.csv
+*.lnk

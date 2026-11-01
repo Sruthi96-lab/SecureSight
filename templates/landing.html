@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureSight | AI Security</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='landing.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+        <span class="logo-icon">S</span>
+        SECURE<span>SIGHT</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <nav id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#technology">Technology</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <a class="nav-button"
+       href="{{ url_for('dashboard') if session.get('logged_in') else url_for('login') }}">
+        {% if session.get('logged_in') %}
+            Dashboard →
+        {% else %}
+            Sign In →
+        {% endif %}
+    </a>
+
+</header>
+
+
+<!-- HERO SECTION -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">
+            AI-POWERED SECURITY INTELLIGENCE
+        </p>
+
+        <p class="small-heading">
+            SECURESIGHT · USER BEHAVIOUR ANALYTICS
+        </p>
+
+        <h1>
+            Unlock Smarter<br>
+            <span>Threat Detection</span>
+        </h1>
+
+        <p class="description">
+            Detect unusual user behaviour, identify potential
+            insider threats and gain intelligent security insights
+            using Artificial Intelligence and Machine Learning.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a class="primary-btn"
+               href="{{ url_for('dashboard') if session.get('logged_in') else url_for('login') }}">
+                Explore SecureSight →
+            </a>
+
+            <a href="#how-it-works" class="secondary-btn">
+                Discover More ↗
+            </a>
+
+        </div>
+
+        <div class="hero-points">
+            <span>✦ AI Powered</span>
+            <span>✦ Behaviour Analytics</span>
+            <span>✦ Risk Detection</span>
+        </div>
+
+    </div>
+
+
+    <!-- CYBERSECURITY VISUAL -->
+
+    <div class="hero-visual">
+
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="orbit orbit-three"></div>
+
+        <div class="glow"></div>
+
+        <div class="shield">
+            <div class="shield-check">✓</div>
+        </div>
+
+        <div class="info-card card-one">
+            <span class="card-icon">⌁</span>
+            <div>
+                <strong>Behaviour Analysis</strong>
+                <small>Continuous activity insights</small>
+            </div>
+        </div>
+
+        <div class="info-card card-two">
+            <span class="status-dot"></span>
+            <div>
+                <strong>Risk Assessment</strong>
+                <small>Prioritized security alerts</small>
+            </div>
+        </div>
+
+        <div class="visual-label">
+            ● SECURITY INTELLIGENCE SYSTEM
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TRUST SECTION -->
+
+<section class="trust-section">
+
+    <p>BUILT AROUND SMARTER SECURITY OPERATIONS</p>
+
+    <div class="trust-items">
+        <span>◈ User Behaviour Analytics</span>
+        <span>⌘ Machine Learning</span>
+        <span>◎ Anomaly Detection</span>
+        <span>↗ Risk Assessment</span>
+    </div>
+
+</section>
+
+
+<!-- SOLUTIONS -->
+
+<section class="section" id="solutions">
+
+    <div class="section-heading">
+        <p class="section-label">OUR SOLUTIONS</p>
+
+        <h2>
+            Turn Activity Data Into<br>
+            <span>Actionable Insights.</span>
+        </h2>
+
+        <p>
+            Understand user activity and identify suspicious
+            patterns with intelligent security analysis.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <span class="number">01</span>
+            <div class="feature-icon">⌁</div>
+            <h3>User Behaviour Analysis</h3>
+            <p>
+                Monitor login patterns, file access,
+                data transfers and user activities.
+            </p>
+        </div>
+
+        <div class="feature-card featured">
+            <span class="number">02</span>
+            <div class="feature-icon">◉</div>
+            <h3>Anomaly Detection</h3>
+            <p>
+                Identify unusual activities using
+                machine-learning algorithms.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <span class="number">03</span>
+            <div class="feature-icon">⌖</div>
+            <h3>Risk Assessment</h3>
+            <p>
+                Categorize detected activities into
+                Low, Medium and High risk levels.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TECHNOLOGY -->
+
+<section class="technology-section" id="technology">
+
+    <div>
+        <p class="section-label">OUR TECHNOLOGY</p>
+
+        <h2>
+            Intelligence With<br>
+            <span>Context.</span>
+        </h2>
+    </div>
+
+    <div class="technology-description">
+        <p>
+            SecureSight combines Artificial Intelligence,
+            Machine Learning and User Behaviour Analytics
+            to identify unusual activity patterns and
+            support security investigations.
+        </p>
+
+        <div class="technology-tags">
+            <span>Python</span>
+            <span>Flask</span>
+            <span>Isolation Forest</span>
+            <span>Random Forest</span>
+            <span>Machine Learning</span>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section class="section workflow-section" id="how-it-works">
+
+    <div class="section-heading">
+        <p class="section-label">HOW IT WORKS</p>
+
+        <h2>
+            From User Activity To<br>
+            <span>Security Awareness.</span>
+        </h2>
+    </div>
+
+    <div class="workflow">
+
+        <div class="workflow-card">
+            <b>01</b>
+            <h3>Data Collection</h3>
+            <p>Collect user activity records.</p>
+        </div>
+
+        <span class="arrow">→</span>
+
+        <div class="workflow-card">
+            <b>02</b>
+            <h3>Behaviour Analysis</h3>
+            <p>Analyse patterns using ML models.</p>
+        </div>
+
+        <span class="arrow">→</span>
+
+        <div class="workflow-card">
+            <b>03</b>
+            <h3>Risk Scoring</h3>
+            <p>Calculate activity risk levels.</p>
+        </div>
+
+        <span class="arrow">→</span>
+
+        <div class="workflow-card">
+            <b>04</b>
+            <h3>Alert Generation</h3>
+            <p>Present alerts for human review.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL CTA -->
+
+<section class="final-section" id="about">
+
+    <div>
+        <p class="section-label">WELCOME TO SECURESIGHT</p>
+
+        <h2>
+            Make Every Signal<br>
+            <span>Count.</span>
+        </h2>
+    </div>
+
+    <a class="primary-btn"
+       href="{{ url_for('dashboard') if session.get('logged_in') else url_for('login') }}">
+        Open Security Workspace →
+    </a>
+
+</section>
+
+
+<footer>
+
+    <a href="/" class="logo">
+        <span class="logo-icon">S</span>
+        SECURE<span>SIGHT</span>
+    </a>
+
+    <p>
+        AI-Based Insider Threat Detection Using User Behaviour Analytics
+    </p>
+
+    <small>
+        Academic Prototype · Synthetic Demo Environment
+    </small>
+
+</footer>
+
+
+<script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            navLinks.classList.remove("show");
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureSight | Login</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='login.css') }}">
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="brand">
+        <div class="brand-icon">🛡</div>
+        <div>
+            <h1>SecureSight</h1>
+            <p>Security Intelligence Platform</p>
+        </div>
+    </div>
+
+    <div class="login-content">
+
+        <div class="welcome">
+            <span class="status">● SYSTEM SECURE</span>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your security dashboard.</p>
+        </div>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <label>Email Address</label>
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <div class="password-box">
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+                <button type="button" onclick="togglePassword()">
+                    Show
+                </button>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Sign In <span>→</span>
+            </button>
+
+        </form>
+
+        <div class="security-note">
+            <span>🔒</span>
+            Protected access · Human verification required
+        </div>
+
+    </div>
+
+    <footer>
+        SecureSight © 2026 | Academic Prototype
+    </footer>
+
+</div>
+
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    password.type =
+        password.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>
