@@ -1,5 +1,6 @@
 
 import os
+import hmac
 from pathlib import Path
 
 import joblib
@@ -40,14 +41,54 @@ FEATURES = [
     "off_hours",
 ]
 
+# Create data directory if it does not exist.
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 app = Flask(__name__)
 
-app.secret_key = os.environ.get(
-    "FLASK_SECRET_KEY",
-    "dev-only-change-this-secret-before-deployment",
+# ------------------------------------------------------------
+# FLASK SECRET KEY
+# ------------------------------------------------------------
+
+SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
+
+if not SECRET_KEY:
+    if os.environ.get("RENDER"):
+        raise RuntimeError(
+            "FLASK_SECRET_KEY must be configured on Render."
+        )
+
+    SECRET_KEY = "local-development-only-change-this-secret"
+
+app.secret_key = SECRET_KEY
+
+# ------------------------------------------------------------
+# ADMIN LOGIN CREDENTIALS
+# ------------------------------------------------------------
+
+ADMIN_EMAIL = os.environ.get(
+    "ADMIN_EMAIL",
+    "admin@securesight.demo"
 )
 
-app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB
+ADMIN_PASSWORD = os.environ.get(
+    "ADMIN_PASSWORD",
+    "SecureSight@123"
+)
+
+# ------------------------------------------------------------
+# SECURITY CONFIGURATION
+# ------------------------------------------------------------
+
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
+# HTTPS cookie security on Render.
+app.config["SESSION_COOKIE_SECURE"] = bool(
+    os.environ.get("RENDER")
+)
 
 
 # ============================================================
@@ -90,7 +131,10 @@ def analyze_activity(df):
 
     # Convert required features to numeric values.
     for col in FEATURES:
-        df[col] = pd.to_numeric(df[col], errors="raise")
+        df[col] = pd.to_numeric(
+            df[col],
+            errors="raise"
+        )
 
     # Validate finite values.
     if not np.isfinite(
@@ -106,7 +150,6 @@ def analyze_activity(df):
     # ISOLATION FOREST ANOMALY DETECTION
     # --------------------------------------------------------
 
-    # -1 = anomaly, 1 = normal.
     isolation_predictions = isolation_model.predict(X)
 
     df["anomaly"] = (
@@ -134,11 +177,8 @@ def analyze_activity(df):
         df["suspicious_probability"] = 0.0
 
     # --------------------------------------------------------
-    # IMPROVED RISK SCORING
+    # RISK SCORING
     # --------------------------------------------------------
-
-    # Each feature contributes a weighted score.
-    # Maximum possible score = 100.
 
     anomaly_score = df["anomaly"] * 20
 
@@ -162,7 +202,6 @@ def analyze_activity(df):
 
     usb_score = df["usb_transfer"] * 7
 
-    # Combine all risk components.
     df["risk_score"] = (
         anomaly_score
         + ml_probability_score
@@ -272,18 +311,27 @@ def login():
     if request.method == "POST":
 
         email = request.form.get(
-            "email", ""
+            "email",
+            ""
         ).strip()
 
         password = request.form.get(
-            "password", ""
+            "password",
+            ""
         )
 
-        # Academic prototype demo credentials.
-        if (
-            email == "admin@securesight.demo"
-            and password == "SecureSight@123"
-        ):
+        # Compare credentials securely.
+        email_valid = hmac.compare_digest(
+            email.encode("utf-8"),
+            ADMIN_EMAIL.encode("utf-8")
+        )
+
+        password_valid = hmac.compare_digest(
+            password.encode("utf-8"),
+            ADMIN_PASSWORD.encode("utf-8")
+        )
+
+        if email_valid and password_valid:
 
             session.clear()
             session["logged_in"] = True
@@ -637,9 +685,7 @@ def logout():
 def health():
 
     return {
-
         "status": "ok",
-
         "message": (
             "SecureSight Insider Threat Detection is running"
         ),
@@ -674,4 +720,8 @@ def reset_data():
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run(
+        host="127.0.0.1",
+        port=5000,
+        debug=False
+    )
